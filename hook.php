@@ -193,6 +193,16 @@ function plugin_sservices_install(): bool
     if (!in_array($migrationVersion, $migratedVersions)) {
         Toolbox::logInFile('sservices', "Running migration version $migrationVersion\n");
         
+        // Remove ID column from display preferences (num = 2)
+        Toolbox::logInFile('sservices', "Removing ID column (num=2) from display preferences\n");
+        $DB->delete(
+            'glpi_displaypreferences',
+            [
+                'itemtype' => 'GlpiPlugin\SServices\SService',
+                'num' => 2,
+            ]
+        );
+        
         // Check if display preferences already exist before inserting
         $existingPref100 = $DB->request([
             'FROM' => 'glpi_displaypreferences',
@@ -309,6 +319,32 @@ function plugin_sservices_install(): bool
         );
 
         $migration->executeMigration();
+        $DB->insert($tableNameMigrations, [
+            'version' => $migrationVersion,
+        ]);
+        Toolbox::logInFile('sservices', "Migration version $migrationVersion completed\n");
+    } else {
+        Toolbox::logInFile('sservices', "Migration version $migrationVersion already applied, skipping\n");
+    }
+
+    // Hide ID column from all displays
+    $migrationVersion = 500;
+    $migration = new Migration($migrationVersion);
+    if (!in_array($migrationVersion, $migratedVersions)) {
+        Toolbox::logInFile('sservices', "Running migration version $migrationVersion - Hiding ID column\n");
+        
+        // Remove ID column (num=2) from display preferences for all users
+        Toolbox::logInFile('sservices', "Removing ID column (num=2) from all display preferences\n");
+        $DB->delete(
+            'glpi_displaypreferences',
+            [
+                'itemtype' => 'GlpiPlugin\SServices\SService',
+                'num' => 2,
+            ]
+        );
+        
+        Toolbox::logInFile('sservices', "ID column hidden successfully\n");
+
         $DB->insert($tableNameMigrations, [
             'version' => $migrationVersion,
         ]);
