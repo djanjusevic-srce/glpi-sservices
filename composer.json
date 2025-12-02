@@ -1,0 +1,30 @@
+{
+    "name": "mivanci/sservices",
+    "description": "GLPI Plugin SServices",
+    "type": "project",
+    "require-dev": {
+        "glpi-project/coding-standard": "^0.9.0"
+    },
+    "license": "GLPv3",
+    "authors": [
+        {
+            "name": "Marko Ivancic"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "GlpiPlugin\\SServices\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "7.4.0"
+        },
+        "sort-packages": true
+    }
+}
