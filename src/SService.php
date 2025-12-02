@@ -233,6 +233,8 @@ class SService extends CommonDBTM
             'datatype' => 'itemlink',
             'massiveaction' => false,
             'searchtype' => 'contains',
+            'nodisplay' => true,
+	    'nosearch' => true,
         ];
 
         $tab[] = [
