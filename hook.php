@@ -265,6 +265,7 @@ function plugin_sservices_getDropdown()
     }
 }
 
+/*
 function plugin_sservices_getDatabaseRelations(): array
 {
     return [
@@ -291,6 +292,7 @@ function plugin_sservices_getDatabaseRelations(): array
         ],
     ];
 }
+ */
 
 /**
  * Override for setting link to individual service (otherwise link is only on ID attribute)
