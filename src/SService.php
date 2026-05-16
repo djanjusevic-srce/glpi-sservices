@@ -197,24 +197,24 @@ class SService extends CommonDBTM
         $this->showFormButtons($params);
     }
 
-    static function getMenuName(): string
+    static function getMenuName()
     {
         return __('Services');
     }
 
-    public static function getMenuContent(): array
+    public static function getMenuContent()
     {
         $menuContent = parent::getMenuContent();
         $menuContent['page'] .= '?reset=reset';
         return $menuContent;
     }
 
-    static function getIcon(): string
+    static function getIcon()
     {
         return "fas fa-heart";
     }
 
-    public function rawSearchOptions(): array
+    public function rawSearchOptions()
     {
 //        $tab = parent::rawSearchOptions();
 
@@ -225,26 +225,27 @@ class SService extends CommonDBTM
             'name' => __('Characteristics', SSERVICES_SSERVICES)
         ];
 
-        $tab[] = [
-            'id' => 100,
-            'table' => $this->getTable(),
-            'field' => 'id',
-            'name' => __('ID', SSERVICES_SSERVICES),
-            'datatype' => 'itemlink',
-            'massiveaction' => false,
-            'searchtype' => 'contains',
-            'nodisplay' => true,
-	    'nosearch' => true,
-        ];
+//       $tab[] = [
+//           'id' => 100,
+//           'table' => $this->getTable(),
+//           'field' => 'id',
+//           'name' => __('ID', SSERVICES_SSERVICES),
+//           'datatype' => 'itemlink',
+//           'massiveaction' => false,
+//           'searchtype' => 'contains',
+//        ];
 
+// datatype for Computer changed from dropdown to itemlink
         $tab[] = [
             'id' => 300,
             'table' => 'glpi_computers',
             'field' => 'name',
             'name' => __('Computer', SSERVICES_SSERVICES),
             'linkfield' => 'computers_id',
-            'datatype' => 'dropdown',
+             // datatype for Computer changed from dropdown to itemlink, now links to Computer Service list
+            'datatype' => 'itemlink',
             'massiveaction' => true,
+            //'searchtype' => 'contains', /* Not needed? Investigate further */
         ];
 
         $tab[] = [
@@ -366,7 +367,7 @@ class SService extends CommonDBTM
         MassiveAction $ma,
         CommonDBTM $item,
         array $ids
-    ): void {
+    ) {
         switch ($ma->getAction()) {
             case 'copy_services_to_computer' :
                 if ($item->getType() == SService::class && $item instanceof SService) {
@@ -445,7 +446,7 @@ class SService extends CommonDBTM
         );
     }
 
-    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0): bool
     {
         switch ($item::getType()) {
             case Computer::class:
@@ -479,7 +480,8 @@ class SService extends CommonDBTM
                     'value' => $item->getID(),         // value to search
                 ],
             ],
-            'target' => $item::getFormURL() . '?id=' . $computersId,
+            //'target' => $item::getFormURL() . '?id=' . $computersId,
+	    'target' => $item::getFormURLWithID($computersId),
             'mainform' => false,
             'is_deleted' => 0,
             'showmassiveactions' => 1,
@@ -503,8 +505,8 @@ class SService extends CommonDBTM
 
 //die(var_dump($managedParams['target']));
 
-//        Search::showList(SService::class, $preparedParams['search']);
-        Search::showList(SService::class, $managedParams);
+        Search::showList(SService::class, $preparedParams['search']);
+//        Search::showList(SService::class, $managedParams);
 
         $js = <<<JAVASCRIPT
          $(function() {
