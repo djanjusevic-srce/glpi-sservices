@@ -6,7 +6,7 @@ use CommonDropdown;
 
 class LocalUser extends CommonDropdown
 {
-    public static function canView(): bool
+    public static function canView(): bool 
     {
         return true;
     }
@@ -21,11 +21,11 @@ class LocalUser extends CommonDropdown
         return true;
     }
 
-    static function getMenuName(): string {
+    static function getMenuName() {
         return __('Local User');
     }
 
-    static function getIcon(): string {
+    static function getIcon() {
         return "fas fa-heart";
     }
 

@@ -11,7 +11,7 @@ class Visibility extends CommonDropdown
         return true;
     }
 
-    public static function canCreate(): bool 
+    public static function canCreate(): bool
     {
         return true;
     }
@@ -21,11 +21,11 @@ class Visibility extends CommonDropdown
         return true;
     }
 
-    static function getMenuName(): string {
+    static function getMenuName() {
         return __('Visibility');
     }
 
-    static function getIcon(): string {
+    static function getIcon() {
         return "fas fa-heart";
     }
 

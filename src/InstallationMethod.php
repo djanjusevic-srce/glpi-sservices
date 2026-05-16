@@ -21,11 +21,11 @@ class InstallationMethod extends CommonDropdown
         return true;
     }
 
-    static function getMenuName(): string {
+    static function getMenuName() {
         return __('Installation Method');
     }
 
-    static function getIcon(): string {
+    static function getIcon() {
         return "fas fa-heart";
     }
 

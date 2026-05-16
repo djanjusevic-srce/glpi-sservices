@@ -21,11 +21,11 @@ class Category extends CommonDropdown
         return true;
     }
 
-    static function getMenuName(): string {
+    static function getMenuName() {
         return __('Category');
     }
 
-    static function getIcon(): string {
+    static function getIcon() {
         return "fas fa-heart";
     }
 
