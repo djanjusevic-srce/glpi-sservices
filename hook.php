@@ -262,6 +262,7 @@ function plugin_sservices_uninstall(): bool
             Toolbox::logInFile('sservices', "Table $tableName dropped successfully\n");
 	} else {
 	    Toolbox::logInFile('sservices', "Table $tableName does not exist, skipping\n");
+        }
     }
 
     Toolbox::logInFile('sservices', "Deleting display preferences for SService\n");
