@@ -19,8 +19,6 @@ function plugin_sservices_install(): bool
 
     Toolbox::logInFile('sservices', "=== Starting SServices Plugin Installation ===\n");
 
-    $DB->allow_signed_keys = false;
-
     $migrationVersion = 100;
     //instance migration with version
     $migration = new Migration($migrationVersion);
@@ -54,41 +52,6 @@ function plugin_sservices_install(): bool
 	} else {
 	    Toolbox::logInFile('sservices', "Table $tableNameSServices already exists\n");
 	}
-
-        if ($DB->tableExists($tableNameSServices)) {
-            Toolbox::logInFile('sservices', "Adding fields to $tableNameSServices\n");
-            //missed value for is_deleted
-	    $migration->addField($tableNameSServices, 'is_deleted', 'bool');
-	    Toolbox::logInFile('sservices', "- Added field: is_deleted\n");
-	    $migration->addField($tableNameSServices, 'computers_id', 'fkey');
-	    $migration->addKey($tableNameSServices, ['computers_id'], 'computers_id');
-	    Toolbox::logInFile('sservices', "- Added field and key: computers_id\n");
-            $migration->addField($tableNameSServices, 'plugin_sservices_categories_id', 'fkey');
-            $migration->addKey($tableNameSServices, 'plugin_sservices_categories_id');
-	    Toolbox::logInFile('sservices', "- Added field and key: plugin_sservices_categories_id\n");
-	    $migration->addField($tableNameSServices, 'info', 'string');
-	    Toolbox::logInFile('sservices', "- Added field: info\n");
-            $migration->addField($tableNameSServices, 'users_id', 'fkey');
-	    $migration->addKey($tableNameSServices, 'users_id');
-	    Toolbox::logInFile('sservices', "- Added field and key: users_id\n");
-            $migration->addField($tableNameSServices, 'groups_id', 'fkey');
-	    $migration->addKey($tableNameSServices, 'groups_id');
-	    Toolbox::logInFile('sservices', "- Added field and key: groups_id\n");
-            $migration->addField($tableNameSServices, 'plugin_sservices_localusers_id', 'fkey');
-	    $migration->addKey($tableNameSServices, 'plugin_sservices_localusers_id');
-	    Toolbox::logInFile('sservices', "- Added field and key: plugin_sservices_localusers_id\n");
-            $migration->addField($tableNameSServices, 'plugin_sservices_visibilities_id', 'fkey');
-	    $migration->addKey($tableNameSServices, 'plugin_sservices_visibilities_id');
-	    Toolbox::logInFile('sservices', "- Added field and key: plugin_sservices_visibilities_id\n");
-            $migration->addField($tableNameSServices, 'is_monitored', 'bool', ['value' => 0]);
-	    $migration->addKey($tableNameSServices, 'is_monitored');
-	    Toolbox::logInFile('sservices', "- Added field and key: is_monitored\n");
-	    $migration->addField($tableNameSServices, 'plugin_sservices_installationmethods_id', 'fkey');
-	    $migration->addKey($tableNameSServices, 'plugin_sservices_installationmethods_id');
-	    Toolbox::logInFile('sservices', "- Added field and key: plugin_sservices_installationmethods_id\n");
-	    $migration->addField($tableNameSServices, 'comment', 'string');
-	    Toolbox::logInFile('sservices', "- Added field: comment\n");
-        }
 
         $tableNameCategories = 'glpi_plugin_sservices_categories';
         if (!$DB->tableExists($tableNameCategories)) {
@@ -140,8 +103,6 @@ function plugin_sservices_install(): bool
         }
 
         Toolbox::logInFile('sservices', "Executing migration version $migrationVersion\n");
-        //execute the whole migration
-        $migration->executeMigration();
         $migration->insertInTable($tableNameMigrations, [
             'version' => $migrationVersion,
         ]);
