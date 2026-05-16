@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `glpi_plugin_sservices_installationmethods` (
-    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
     `comment` TEXT DEFAULT NULL,
     PRIMARY KEY (`id`),
