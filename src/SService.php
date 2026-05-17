@@ -11,6 +11,7 @@ use Html;
 use MassiveAction;
 use Search;
 use Session;
+use Toolbox;
 
 class SService extends CommonDBTM
 {
@@ -519,8 +520,57 @@ JAVASCRIPT;
         echo Html::scriptBlock($js);
     }
 
+private function logServiceAction(string $action): void
+{
+    $computerId = $this->fields['computers_id'] ?? 0;
+    $categoryId = $this->fields['plugin_sservices_categories_id'] ?? 0;
+    $info = $this->fields['info'] ?? '';
+
+    $computerName = 'Unknown';
+    $categoryName = 'Unknown';
+
+    if ($computerId > 0) {
+        $computer = new Computer();
+
+        if ($computer->getFromDB($computerId)) {
+            $computerName = $computer->fields['name'] ?? 'Unknown';
+        }
+    }
+
+    if ($categoryId > 0) {
+        $category = new Category();
+
+        if ($category->getFromDB($categoryId)) {
+            $categoryName = $category->fields['name'] ?? 'Unknown';
+        }
+    }
+
+    Toolbox::logInFile('sservices', "Service {$action}: ID {$this->getID()}, Computer: {$computerName} ({$computerId}), Category: {$categoryName}, Info: {$info}\n");
+}
+
+public function post_addItem(): void
+{
+    $this->logServiceAction('added');
+}
+
+public function post_restoreItem(): void
+{
+    $this->logServiceAction('restored');
+}
+
+public function post_deleteItem(): void
+{
+    $this->logServiceAction('deleted');
+}
+
+public function post_purgeItem(): void
+{
+    $this->logServiceAction('purged permanently');
+}
+
 //    public static function getSpecificValueToDisplay($field, $values, array $options = [])
 //    {
 //        return '';
 //    }
+
 }
